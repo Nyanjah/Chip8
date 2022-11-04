@@ -3,7 +3,7 @@ use crate::render::ChipRender;
 use device_query::Keycode;
 use device_query::{DeviceQuery, DeviceState, Keycode::*};
 use rand::Rng;
-use std::{thread::sleep, time::Duration};
+use std::{time::Duration};
 use std::thread;
 use std::num::Wrapping;
 
@@ -93,10 +93,10 @@ impl CHIP8 {
             variables: [0; 16],
             display: [[false; 32]; 64],
             renderer: ChipRender::setup().expect("Failed to initialize chip display renderer"),
-            config: Config { ips: 50 },
+            config: Config { ips: 700 },
         }
     }
-
+    
     pub fn run(&mut self) -> () {
         // Setting up audio output
         //let audio_handle = rodio::OutputStream::try_default();
@@ -108,18 +108,18 @@ impl CHIP8 {
         [ Key1, Key2, Key3, Key4, Q, W, E, R, A, S, D, F, Z, X, C, V ];
         let device_state = DeviceState::new();
         //Creating thread which decrementes the timers independent of the CPI
-        thread::spawn(move ||{
-            loop{
-                // Decrement timers @ 60Hz
-                thread::sleep(Duration::from_secs_f32(1.0/60.0));
-                if delay_timer != 0{
-                    delay_timer = delay_timer - 1;
-                }
-                if sound_timer != 0{
-                    sound_timer = sound_timer - 1;
-                }
-            }
-        });
+        // thread::spawn(move ||{
+        //     loop{
+        //         // Decrement timers @ 60Hz
+        //         thread::sleep(Duration::from_secs_f32(1.0/60.0));
+        //         if delay_timer != 0{
+        //             delay_timer = delay_timer - 1;
+        //         }
+        //         if sound_timer != 0{
+        //             sound_timer = sound_timer - 1;
+        //         }
+        //     }
+        // });
         // thread::spawn( move ||{
         //     loop{
         //         // Beep while the timer isnt zero...
@@ -130,18 +130,15 @@ impl CHIP8 {
         // });
       
 
-        let simulated_execution_time = 1.0/self.config.ips as f32;
+        let simulated_execution_time = 1.0/(self.config.ips as f32);
         loop {
-
             // Calculating desired time to sleep between instructions using desired IPS
             // Sleeping the calculated time
             thread::sleep(Duration::from_secs_f32(simulated_execution_time));
 
             // Update the vector of Keycodes corresponding to keys currently being pressed
             let pressed_keys: Vec<Keycode> = device_state.get_keys();
-            sleep(Duration::from_millis(10));
             // FETCH STAGE
-            sleep(std::time::Duration::from_millis(10));
             // Fetch the instruction from the program counter
             let inst_part1 = self.mem_read(self.pc);
             let inst_part2 = self.mem_read(self.pc + 1);
@@ -160,11 +157,10 @@ impl CHIP8 {
             let n = instruction & 0x000F;                  // 4-bit  number
             let byte = (instruction & 0x00FF) as u8;        // 8-bit  immediate number
             let addr = instruction & 0x0FFF;               // 12-bit immediate memory address
-            log::debug!("op/x/y/n/byte/addr  =  {}/{}/{}/{}/{}/{}",op,x,y,n,byte,addr);
             // EXECUTE STAGE
             // This match statement contains all the instruction logic that can be executed by the CHIP-8,
             // implemented according to their original corresponding functionality.
-            println!("index: {:?}",self.index);
+           
             match op {
                 
                 0 => {
@@ -173,11 +169,13 @@ impl CHIP8 {
                         0 => {
                             self.display = [[false; 32]; 64];
                             self.renderer.render(&mut self.display);
+                          
                         }
                         // 00EE subroutine
                         _=>{
                             self.pc = self.stack[self.stack.len()-1];
                             self.stack.pop();
+                          
                             
                         }
                     }
@@ -185,25 +183,30 @@ impl CHIP8 {
 
                 // Jump (1NNN)
                 1 => {
-                    self.pc = addr
+                    self.pc = addr;
+                    
                 }
                 // Set register vx (6XNN)
                 //2NNN Subroutine
                 2 =>{
                     self.stack.push(self.pc);
                     self.pc = addr;
+                   
                 }
 
                 6 => {
                     self.variables[x as usize] = byte;
+                    
                 }
                 // Add value to register vx (7XNN)
                 7 => {
-                    self.variables[y as usize] = self.variables[y as usize].wrapping_add(byte);
+                    self.variables[x as usize] = self.variables[x as usize].wrapping_add(byte);
+                   
                 }
                 // Set index register I (ANNN)
                 0xA => {
                     self.index = addr;
+                   
                 }
                 // Draw to screen  (DXYN)
                 0xD => {
@@ -250,7 +253,9 @@ impl CHIP8 {
                         }
                         current_y_pos = current_y_pos + 1;
                     }
-                    self.renderer.render(&mut self.display); // Render the sprite on screen
+                    // Render the sprite on screen
+                    self.renderer.render(& mut self.display);
+                  
                 }
 
                 // Skip Instuctions
@@ -258,18 +263,21 @@ impl CHIP8 {
                 3 => {
                     if self.variables[x as usize] == byte {
                         self.pc = self.pc + 2;
+                       
                     }
                 }
                 // 4XNN - Skip one instruction if the value in Vx is NOT equal to NN
                 4 => {
                     if self.variables[x as usize] != byte {
                         self.pc = self.pc + 2;
+                        
                     }
                 }
                 // 5XY0 - Skip one instruction if Vx and Vy are equal.
                 5 => {
                     if self.variables[x as usize] == self.variables[y as usize] {
                         self.pc = self.pc + 2;
+                       
                     }
                 }
                 // 9XY0 - Skip one instruction if Vx and Vy are NOT equal.
@@ -285,6 +293,7 @@ impl CHIP8 {
                         // 8X70 Set - Vx is set to the value in Vy
                         0 => {
                             self.variables[x as usize] = self.variables[y as usize];
+                            
                         }
                         // 8X71 Binary OR - Vx = Vx OR Vy
                         1 => {
@@ -320,7 +329,7 @@ impl CHIP8 {
                             if self.variables[x as usize] < self.variables[y as usize] {
                                 self.variables[15] = 0;
                             }
-                            self.variables[x as usize] = self.variables[y as usize].wrapping_sub(self.variables[x as usize]);
+                            self.variables[x as usize] = self.variables[x as usize].wrapping_sub(self.variables[y as usize]);
                         }
                         // 8XY6 Shift Right (Ambiguous Instruction)
                         6 => {
@@ -454,17 +463,20 @@ impl CHIP8 {
                             for i in 0..3{
                                 let digit = (number) % 10;
                                 number = number / 10;
-                                self.memory[(self.index as usize + i )] = digit;
+                                self.memory[(self.index as usize + 2 - i )] = digit;
+                                
                             }
                         }
                         // FX55 Store memory (Ambiguous Instruction)
                         0x55 => {
+                            //println!("STORED");
                             for i in 0..(x as usize)+1{
                                 self.memory[self.index as usize + i] = self.variables[i];
                             }
                         }
                         // FX65 Load memory (Ambiguous Instruction)
                         0x65 => {
+                            //println!("LOADED");
                             for i in 0..(x as usize)+1{
                                 self.variables[i] = self.memory[self.index as usize + i];
                             }

@@ -39,7 +39,7 @@ impl ChipRender{
             /* divide screen for the logger and display */
             let rects = Layout::default()
             .direction(Direction::Horizontal)
-            .constraints([Constraint::Percentage(50), Constraint::Percentage(50)].as_ref())
+            .constraints([Constraint::Percentage(60), Constraint::Percentage(40)].as_ref())
             .split(frame.size());
         
         /* draw the display */
