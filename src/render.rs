@@ -34,21 +34,20 @@ impl ChipRender{
     }
 
     pub fn render(& mut self,display:& mut[[bool; 32]; 64]) -> () {
-    
         self.terminal.draw(|frame|{
             /* divide screen for the logger and display */
             let rects = Layout::default()
             .direction(Direction::Horizontal)
             .constraints([Constraint::Percentage(60), Constraint::Percentage(40)].as_ref())
             .split(frame.size());
-        
+         
         /* draw the display */
         frame.render_stateful_widget(ChipRenderWidget, rects[0],display);
         
         let tui_w = TuiLoggerWidget::default()
             .block(
                 Block::default()
-                    .title(" Log ")
+                    .title(" Program Instruction Log ")
                     .border_style(Style::default().fg(Color::White).bg(Color::Black))
                     .borders(Borders::ALL),
             )

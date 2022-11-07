@@ -133,6 +133,7 @@ dependencies = [
  "log",
  "rand",
  "rodio",
+ "spin_sleep",
  "tui",
  "tui-logger",
 ]
@@ -1084,6 +1085,16 @@ name = "smallvec"
 version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
+
+[[package]]
+name = "spin_sleep"
+version = "0.3.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "891836ef5f8a5b9678938d34d75391a3794267806482105ffcd363271980c10c"
+dependencies = [
+ "lazy_static",
+ "winapi",
+]
 
 [[package]]
 name = "stdweb"

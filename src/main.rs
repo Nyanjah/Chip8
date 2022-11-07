@@ -1,6 +1,6 @@
 mod cpu;
 mod render;
-use cpu::CHIP8;
+use cpu::{CHIP8, start_clock, run};
 extern crate log;
 
 // CHIP-8 Emulator written in the RUST programming language. 🦀 Praise Be Ferris 🦀
@@ -13,8 +13,8 @@ extern crate log;
 fn main(){
     tui_logger::init_logger(log::LevelFilter::Trace).unwrap();
     tui_logger::set_default_level(log::LevelFilter::Trace);
-    let mut chip = CHIP8::new();
-    chip.load_program(String::from("./ROMS/cavern.ch8"));
-    chip.run();
-
+    let chip = CHIP8::new();
+    start_clock(&chip);
+    chip.lock().unwrap().load_program(String::from("./ROMS/Test.ch8"));
+    run(&chip);
 }
