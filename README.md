@@ -1,7 +1,9 @@
 # CHIP-8 Emulator in Rust
 
-This repository contains a CHIP-8 emulator implemented in Rust, demonstrating proficiency in low-level system programming and embedded systems. 
-The emulator is designed to offer a comprehensive understanding of the CHIP-8 system, including graphics rendering and sound integration, utilizing modern Rust practices and libraries.
+This repo contains a CHIP-8 emulator implemented in Rust, a project I started to get into emulating low level hardware and it seemed like a great excuse to learn the Rust programming language.
+The program is designed to emulate the CPU and I/O of the CHIP-8 system, including graphics rendering and sound integration, utilizing modern Rust practices and libraries.
+It runs in the terminal and includes logging for each instruction being executed on the CPU as wella as a display to see the ROM being played.
+Windows, Mac, and Linux are all supported.
 ![image](https://github.com/Nyanjah/Chip8/assets/65467278/32742f5a-6215-4a97-a93f-1fde69d6583c)
 
 ## Table of Contents
