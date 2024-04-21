@@ -29,3 +29,18 @@ To get started with this emulator, clone the repository and build the project us
 git clone https://github.com/your-username/chip8-rust.git
 cd chip8-rust
 cargo build --release
+```
+## Usage
+To use this emulator once installed, first import CPU:
+use cpu::{CHIP8, start_clock, run};
+
+## References
+
+The development of this project is based on several resources that provide detailed information about CHIP-8. Below are key references used:
+
+- [CHIP-8 Technical Reference](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#memmap) - This resource offers an extensive technical reference on the CHIP-8, including memory mapping and operational details.
+
+
+
+
+
