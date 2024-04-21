@@ -1,6 +1,7 @@
 # CHIP-8 Emulator in Rust
 
 This repo contains a CHIP-8 emulator implemented in Rust, a project I started to get into emulating low level hardware and it seemed like a great excuse to learn the Rust programming language.
+
 I'd reccomend anyone who want's to get into emulation to give it a shot because It was really fun to work on and I learned a lot about how the CPU operates in older hardware.
 
 ![image](https://github.com/Nyanjah/Chip8/assets/65467278/32742f5a-6215-4a97-a93f-1fde69d6583c)
