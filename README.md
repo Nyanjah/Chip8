@@ -11,9 +11,6 @@ I'd reccomend anyone who want's to get into emulation to give it a shot because 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Dependencies](#dependencies)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 The CHIP-8 emulator here was one of my first projects in Rust. It was a fun way to explore simulating low-level hardware and learning the Rust programming languge.
