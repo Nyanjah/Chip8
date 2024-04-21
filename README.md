@@ -2,6 +2,7 @@
 
 This repository contains a CHIP-8 emulator implemented in Rust, demonstrating proficiency in low-level system programming and embedded systems. 
 The emulator is designed to offer a comprehensive understanding of the CHIP-8 system, including graphics rendering and sound integration, utilizing modern Rust practices and libraries.
+![image](https://github.com/Nyanjah/Chip8/assets/65467278/32742f5a-6215-4a97-a93f-1fde69d6583c)
 
 ## Table of Contents
 - [Introduction](#introduction)
